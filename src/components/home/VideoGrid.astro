@@ -1,0 +1,66 @@
+---
+// src/components/home/MediaGrid.astro
+// Using placehold.co for image placeholders
+const videoPlaceholderUrl = "https://placehold.co/800x450/1e212b/c3b47f?text=FEATURED+VIDEO";
+const instagramPlaceholderUrl = "https://placehold.co/400x400/c3b47f/1e212b?text=@ROMANSTREETMUSIC";
+---
+
+<section class="bg-charcoal py-20 px-8">
+	<div class="max-w-7xl mx-auto">
+		<h2 class="text-4xl font-serif text-center mb-12 text-cream">Media & Moments</h2>
+
+		<div class="grid md:grid-cols-2 gap-10">
+
+			<div class="p-6 bg-cream/5 rounded-lg border border-cream/10">
+				<h3 class="text-2xl font-semibold mb-4 text-gold">Latest Live Performance</h3>
+				
+				<div class="aspect-video w-full relative bg-charcoal flex items-center justify-center">
+					<img 
+						src={videoPlaceholderUrl} 
+						alt="Placeholder for latest Roman Street live video"
+						class="w-full h-full object-cover rounded"
+					/>
+				</div>
+				
+				<div class="mt-4 text-center">
+					<a href="/videos" class="text-lg font-bold text-cream hover:text-gold transition underline underline-offset-4">
+						Watch All Videos →
+					</a>
+				</div>
+			</div>
+
+			<div class="grid grid-rows-2 gap-10">
+				
+				<a 
+					href="https://instagram.com/romanstreetmusic" 
+					target="_blank"
+					class="bg-gold text-charcoal p-8 rounded-lg flex flex-col items-center justify-center 
+						   text-center hover:opacity-90 transition shadow-xl"
+				>
+					<h3 class="text-3xl font-serif font-bold mb-2">Follow The Journey</h3>
+					<p class="text-lg font-semibold mb-4">@ROMANSTREETMUSIC</p>
+					<img 
+						src={instagramPlaceholderUrl} 
+						alt="Instagram Feed Placeholder"
+						class="w-32 h-32 object-cover rounded-md shadow-lg"
+					/>
+					<span class="mt-4 text-sm font-bold underline">VIEW INSTAGRAM FEED →</span>
+				</a>
+
+				<div class="p-8 bg-cream/5 rounded-lg flex flex-col items-center justify-center border border-gold/30">
+					<h3 class="text-3xl font-serif text-cream mb-4">Book Roman Street</h3>
+					<p class="text-lg text-cream/80 text-center mb-6">
+						Available for concerts, festivals, private events, and weddings.
+					</p>
+					<a 
+						href="/booking" 
+						class="bg-gold text-charcoal px-6 py-3 rounded-full font-bold uppercase text-sm 
+							   hover:opacity-90 transition shadow-xl"
+					>
+						SEND BOOKING INQUIRY
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

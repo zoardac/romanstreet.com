@@ -1,0 +1,19 @@
+// src/content/config.ts
+import { defineCollection, z } from 'astro:content';
+
+const tourCollection = defineCollection({
+  type: 'data', // Use 'data' for structured data like tour dates
+  schema: z.object({
+	date: z.date(), // Use JavaScript Date object for easy sorting
+	venue: z.string(),
+	city: z.string(),
+	state: z.string(),
+	country: z.string().optional().default('USA'),
+	status: z.enum(['on sale', 'sold out', 'postponed', 'canceled']), // Enforce valid status
+	ticketsUrl: z.string().url().nullable().optional(),
+  }),
+});
+
+export const collections = {
+  'tour': tourCollection,
+};

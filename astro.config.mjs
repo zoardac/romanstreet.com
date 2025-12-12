@@ -1,15 +1,17 @@
-// @ts-check
+// astro.config.mjs
 import { defineConfig } from 'astro/config';
-
-import tailwindcss from '@tailwindcss/vite';
-
+import tailwind from '@astrojs/tailwind'; // <-- CRITICAL IMPORT
 import vercel from '@astrojs/vercel';
-
-// https://astro.build/config
 export default defineConfig({
-  vite: {
-    plugins: [tailwindcss()]
-  },
+  // Output setting for Vercel
+  output: 'server', 
+  
+  integrations: [
+    tailwind({
+      // Optional: If your tailwind.config.mjs is in the root, this is fine
+    }),
+  ],
 
-  adapter: vercel()
+  // Add the Vercel adapter if you haven't already
+  adapter: vercel(),
 });

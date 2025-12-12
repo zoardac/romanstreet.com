@@ -1,1 +1,21 @@
-@import "tailwindcss";
+/* src/styles/global.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add font imports here (e.g., from Google Fonts) */
+@layer base {
+  /* Define custom color properties for easy reuse */
+  :root {
+	--color-charcoal: #1e212b; /* Deep Navy/Charcoal */
+	--color-gold: #c3b47f;     /* Muted Gold Accent */
+	--color-cream: #f4f2ee;    /* Off-White Text */
+  }
+
+  /* Apply the theme to the body */
+  body {
+	background-color: var(--color-charcoal);
+	color: var(--color-cream);
+	font-family: 'Inter', sans-serif; /* Body font */
+  }
+}

@@ -1,0 +1,42 @@
+---
+// src/components/home/TourList.astro
+const upcomingDates = [
+	{ id: 1, date: 'JAN 20', venue: 'Lobby Lounge', location: 'Slidell, LA', tickets: '#' },
+	{ id: 2, date: 'MAR 22', venue: 'Dave Koz and Friends at Sea', location: 'Caribbean Cruise', tickets: '#' },
+	{ id: 3, date: 4, date: 'APR 05', venue: 'The Velvet Note Jazz Club', location: 'Atlanta, GA', tickets: '#' },
+];
+---
+
+<section class="bg-charcoal py-20">
+	<div class="max-w-7xl mx-auto px-8">
+		<h2 class="text-4xl font-serif text-center mb-12 text-cream">Upcoming Shows</h2>
+
+		<div class="grid md:grid-cols-3 gap-8">
+			{upcomingDates.map((show) => (
+				<div class="bg-cream/5 hover:bg-cream/10 transition duration-300 p-6 rounded-lg border border-gold/20 flex flex-col justify-between">
+					<div>
+						<p class="text-4xl font-bold text-cream mb-2">{show.date}</p>
+						
+						<h3 class="text-xl font-semibold text-cream mb-1">{show.venue}</h3>
+						<p class="text-sm text-cream opacity-70">{show.location}</p>
+					</div>
+
+					<a 
+						href={show.tickets} 
+						target="_blank" 
+						class="mt-6 self-start bg-gold text-charcoal px-4 py-2 rounded-full font-bold text-sm 
+							   hover:bg-opacity-80 transition block text-center"
+					>
+						GET TICKETS
+					</a>
+				</div>
+			))}
+		</div>
+
+		<div class="text-center mt-12">
+			<a href="/tour" class="text-lg font-bold text-gold hover:text-cream transition underline underline-offset-4">
+				View Full Tour Schedule →
+			</a>
+		</div>
+	</div>
+</section>
