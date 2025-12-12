@@ -1,0 +1,85 @@
+---
+// src/components/common/Footer.astro
+
+// Define the navigation links
+const navLinks = [
+	{ title: 'Home', href: '/' },
+	{ title: 'About', href: '/about' },
+	{ title: 'Tour', href: '/tour' },
+	{ title: 'Contact', href: '/contact' },
+];
+
+const musicLinks = [
+	{ title: 'Discography', href: '/music' },
+	{ title: 'Videos', href: '/videos' },
+	{ title: 'Store', href: '/store' },
+];
+
+const socialLinks = [
+	{ title: 'Spotify', href: 'https://spotify.com/romanstreet' },
+	{ title: 'YouTube', href: 'https://youtube.com/romanstreet' },
+	{ title: 'Instagram', href: 'https://instagram.com/romanstreetmusic' },
+	{ title: 'Facebook', href: 'https://facebook.com/romanstreet' },
+];
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-charcoal pt-12 pb-8 border-t border-cream/10">
+	<div class="max-w-7xl mx-auto px-8">
+		<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+			<div class="col-span-2 md:col-span-1">
+				<p class="font-serif text-3xl text-cream tracking-widest mb-4">
+					ROMAN STREET
+				</p>
+				<p class="text-sm text-cream/50 mb-2">
+					&copy; {currentYear} Roman Street Music. All Rights Reserved.
+				</p>
+				<p class="text-xs text-cream/40">
+					Website by [Your Name/Agency]
+				</p>
+			</div>
+
+			<div>
+				<h3 class="font-semibold text-gold uppercase text-sm mb-3">Site Map</h3>
+				<ul class="space-y-2">
+					{navLinks.map(link => (
+						<li>
+							<a href={link.href} class="text-cream/70 hover:text-gold transition text-sm">
+								{link.title}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<div>
+				<h3 class="font-semibold text-gold uppercase text-sm mb-3">Music & Media</h3>
+				<ul class="space-y-2">
+					{musicLinks.map(link => (
+						<li>
+							<a href={link.href} class="text-cream/70 hover:text-gold transition text-sm">
+								{link.title}
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+			
+			<div>
+				<h3 class="font-semibold text-gold uppercase text-sm mb-3">Connect</h3>
+				<ul class="space-y-2">
+					{socialLinks.map(link => (
+						<li>
+							<a href={link.href} target="_blank" class="text-cream/70 hover:text-gold transition text-sm">
+								{link.title} →
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+
+		</div>
+	</div>
+</footer>
