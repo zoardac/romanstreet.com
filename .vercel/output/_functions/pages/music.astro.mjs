@@ -1,7 +1,7 @@
 /* empty css                                 */
-import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, h as addAttribute } from '../chunks/astro/server_DdhnyDlc.mjs';
+import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, h as addAttribute } from '../chunks/astro/server_DUl7M3rT.mjs';
 import 'piccolore';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_w1bXWVH1.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_Db1UAkey.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Music = createComponent(($$result, $$props, $$slots) => {
