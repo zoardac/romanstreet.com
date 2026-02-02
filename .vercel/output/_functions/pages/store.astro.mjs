@@ -1,7 +1,7 @@
 /* empty css                                 */
 import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, g as addAttribute } from '../chunks/astro/server_B-2LxKLH.mjs';
 import 'piccolore';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_6g5RksJP.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_DSOK1L8C.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Store = createComponent(($$result, $$props, $$slots) => {
