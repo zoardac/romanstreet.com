@@ -1,25 +1,34 @@
 /* empty css                                 */
-import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, h as addAttribute } from '../chunks/astro/server_DUl7M3rT.mjs';
+import { e as createComponent, k as renderComponent, l as renderScript, r as renderTemplate, m as maybeRenderHead, h as addAttribute } from '../chunks/astro/server_DUl7M3rT.mjs';
 import 'piccolore';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_Db1UAkey.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_DPTYWPb5.mjs';
 export { renderers } from '../renderers.mjs';
 
-const $$Tour = createComponent(($$result, $$props, $$slots) => {
-  const fullSchedule = [
-    { date: "JAN 20, 2026", city: "Slidell", state: "LA", venue: "Lobby Lounge", status: "Tickets On Sale", tickets: "#" },
-    { date: "FEB 15, 2026", city: "Birmingham", state: "AL", venue: "Lyric Theatre", status: "Tickets On Sale", tickets: "#" },
-    { date: "MAR 22, 2026", city: "Caribbean", state: "N/A", venue: "Dave Koz Cruise", status: "Sold Out", tickets: null },
-    { date: "APR 05, 2026", city: "Atlanta", state: "GA", venue: "The Velvet Note Jazz Club", status: "Tickets On Sale", tickets: "#" },
-    { date: "MAY 10, 2026", city: "Pensacola", state: "FL", venue: "Pensacola Jazz Festival", status: "Tickets On Sale", tickets: "#" },
-    { date: "JUN 01, 2026", city: "Beverly Hills", state: "CA", venue: "Spaghettini", status: "Tickets On Sale", tickets: "#" },
-    { date: "JUL 18, 2026", city: "St. Louis", state: "MO", venue: "Blue Strawberry", status: "Tickets On Sale", tickets: "#" },
-    { date: "AUG 29, 2026", city: "Chicago", state: "IL", venue: "City Winery", status: "Tickets On Sale", tickets: "#" }
-  ];
-  return renderTemplate`${renderComponent($$result, "BaseLayout", $$BaseLayout, { "title": "Tour Schedule" }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="pt-32 pb-20 max-w-7xl mx-auto px-8"> <h1 class="font-serif text-5xl text-center text-cream mb-12 border-b border-gold/30 pb-3">
+const $$Tour = createComponent(async ($$result, $$props, $$slots) => {
+  const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqqnH6z6qwQdxXZlfU6CMvGHlVZfOCqC8CumlXz_J1Yh3gQjmyt7nIUO0syGNKGHj8mESIT568Efx9/pub?gid=0&single=true&output=csv";
+  const response = await fetch(SHEET_URL);
+  const csv = await response.text();
+  const rows = csv.trim().split("\n").filter((row) => row.trim() !== "");
+  const fullSchedule = rows.slice(1).map((row) => {
+    const cells = row.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g) || [];
+    const clean = cells.map((c) => c.replace(/^"|"$/g, "").trim());
+    return {
+      date: `${clean[0]} ${clean[1]}`.trim(),
+      // If clean[2] is the year and clean[3] is time, they are often exported as "2026, 8:00 PM"
+      // We ensure we grab the right index even if they are split
+      time: clean[3] || "",
+      location: `${clean[4]}, ${clean[5]}`,
+      // City, State
+      venue: clean[6] || "TBA",
+      status: clean[7] || "Upcoming",
+      tickets: clean[8] || "#"
+    };
+  });
+  return renderTemplate`${renderComponent($$result, "BaseLayout", $$BaseLayout, { "title": "Tour Schedule" }, { "default": async ($$result2) => renderTemplate` ${maybeRenderHead()}<section class="pt-40 pb-32 max-w-7xl mx-auto px-8"> <h1 class="font-serif text-6xl text-center text-cream mb-16 border-b border-gold/20 pb-6">
 2026 Tour Schedule
-</h1> <div class="mb-10 p-4 bg-cream/5 rounded-lg border border-gold/10"> <input type="text" placeholder="Search by City or Venue..." class="w-full p-3 bg-charcoal text-cream rounded border-2 border-gold/30 focus:border-gold outline-none placeholder-cream/50"> </div> <div class="hidden md:grid md:grid-cols-5 gap-4 font-bold text-gold border-b-2 border-gold/50 pb-2 mb-4 uppercase text-sm tracking-wider"> <div>Date</div> <div class="col-span-2">Venue</div> <div>Location</div> <div class="text-right">Tickets</div> </div> <div class="space-y-2"> ${fullSchedule.map((show) => renderTemplate`<div class="grid md:grid-cols-5 gap-4 py-4 md:py-3 items-center border-b border-cream/10 hover:bg-cream/5 transition duration-150 rounded-lg md:rounded-none px-4 md:px-0"> <div class="md:col-span-1"> <p class="font-serif font-bold text-xl text-gold">${show.date.split(",")[0]}</p> <p class="md:hidden text-sm text-cream/70 mt-1">${show.venue}, ${show.city}, ${show.state}</p> </div> <div class="hidden md:col-span-2 md:block"> <p class="font-semibold text-cream">${show.venue}</p> </div> <div class="hidden md:col-span-1 md:block"> <p class="text-cream/80">${show.city}, ${show.state}</p> </div> <div class="md:col-span-1 text-right"> ${show.status === "Tickets On Sale" ? renderTemplate`<a${addAttribute(show.tickets, "href")} target="_blank" class="inline-block bg-gold text-charcoal px-4 py-2 rounded-full font-bold text-sm hover:opacity-90 transition"> ${show.status} </a>` : renderTemplate`<span class="inline-block text-cream/40 px-4 py-2 rounded-full border border-cream/20 text-sm"> ${show.status} </span>`} </div> </div>`)} </div> <p class="text-center text-sm text-cream/60 mt-10">
-*All dates and times are subject to change. Check venue websites for latest information.
-</p> </section> ` })}`;
+</h1> <div class="mb-16 p-6 bg-cream/5 rounded-xl border border-gold/10 shadow-2xl"> <input id="tourSearch" type="text" placeholder="Search by City or Venue..." class="w-full p-4 bg-charcoal text-cream rounded-lg border-2 border-gold/20 focus:border-gold outline-none placeholder-cream/30 transition-all font-sans"> </div> <div class="hidden md:grid md:grid-cols-5 gap-8 font-bold text-gold/60 border-b border-gold/30 pb-4 mb-6 uppercase text-xs tracking-[0.2em]"> <div>Date</div> <div class="col-span-2">Venue</div> <div>Location</div> <div class="text-right">Status</div> </div> <div class="space-y-4"> ${fullSchedule.map((show) => renderTemplate`<div class="tour-row grid md:grid-cols-5 gap-8 py-10 md:py-8 items-center border-b border-cream/5 hover:bg-cream/[0.02] transition-all duration-300 px-6 md:px-0 group"> <div class="md:col-span-1"> <p class="font-serif font-bold text-3xl text-gold uppercase leading-none group-hover:scale-105 transition-transform origin-left">${show.date}</p> <p class="text-xs text-cream/40 mt-2 uppercase tracking-widest font-sans">${show.time}</p> </div> <div class="md:col-span-2"> <a${addAttribute(show.mapLink, "href")} target="_blank" rel="noopener noreferrer" class="inline-block group/link"> <p class="font-semibold text-cream text-2xl leading-tight mb-1 group-hover/link:text-gold transition-colors"> ${show.venue} <span class="inline-block text-gold opacity-0 group-hover/link:opacity-100 group-hover/link:translate-x-1 transition-all text-sm align-middle ml-1">↗</span> </p> </a> <p class="md:hidden text-sm text-gold/70 mt-2 font-sans tracking-wide">${show.location}</p> </div> <div class="hidden md:block md:col-span-1"> <p class="text-cream/60 font-sans text-base tracking-wide">${show.location}</p> </div> <div class="md:col-span-1 text-right"> ${show.status.toLowerCase().includes("available") || show.status.toLowerCase().includes("sale") ? renderTemplate`<a${addAttribute(show.tickets, "href")} target="_blank" class="inline-block bg-gold text-charcoal px-8 py-3 rounded-full font-bold text-xs hover:bg-cream hover:scale-105 transition-all uppercase tracking-widest shadow-lg active:scale-95"> ${show.status} </a>` : renderTemplate`<span class="inline-block text-cream/20 px-8 py-3 rounded-full border border-cream/10 text-xs uppercase font-bold tracking-widest"> ${show.status} </span>`} </div> </div>`)} </div> <p class="text-center text-xs text-cream/30 mt-20 italic font-sans uppercase tracking-widest">
+* All dates and times are subject to change.
+</p> </section> ` })} ${renderScript($$result, "/Users/bradmclaughlin/Projects/romanstreet.com/src/pages/tour.astro?astro&type=script&index=0&lang.ts")}`;
 }, "/Users/bradmclaughlin/Projects/romanstreet.com/src/pages/tour.astro", void 0);
 
 const $$file = "/Users/bradmclaughlin/Projects/romanstreet.com/src/pages/tour.astro";

@@ -1,88 +1,88 @@
 ---
-// src/pages/music.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Icon } from 'astro-icon/components'; // Assuming astro-icon is installed for Spotify/Apple logos
 
-// Mock Discography Data
-const discography = [
-	{ 
-		id: 'baltic', 
-		title: 'Baltic', 
-		year: 2024, 
-		art: "https://placehold.co/400x400/c3b47f/1e212b?text=BALTIC+ALBUM+ART", 
-		tracks: ["Baltic", "San Jose", "Windjammer", "Dark Eyes", "Track 5", "Track 6"],
-		links: { spotify: '#', apple: '#', store: '#' }
+const albums = [
+	{
+		title: "Balcony of the World",
+		year: "2020",
+		image: "/images/albums/balcony.jpg",
+		spotify: "https://open.spotify.com/album/7uOWREqwofvWZ1NXiSm1pz?si=zqKkt6MvTuejqswu__Hzbg",
+		description: "The latest full studio release featuring a blend of jazz fusion and acoustic melodies."
 	},
-	{ 
-		id: 'atlantic', 
-		title: 'Atlantic', 
-		year: 2022, 
-		art: "https://placehold.co/400x400/1e212b/c3b47f?text=ATLANTIC+ALBUM+ART", 
-		tracks: ["Bésame Mucho (Live)", "Elizabeth", "Gypsy Dance", "Track 4", "Track 5"],
-		links: { spotify: '#', apple: '#', store: '#' }
+	{
+		title: "Quarantine Jams",
+		year: "2020",
+		image: "/images/albums/quarantine.jpg",
+		spotify: "https://open.spotify.com/album/..."
+	},
+	{
+		title: "Bohemia",
+		year: "2016",
+		image: "/images/albums/bohemia.jpg",
+		spotify: "https://open.spotify.com/album/..."
+	},
+	{
+		title: "Shorelines",
+		year: "2010",
+		image: "/images/albums/shorelines.jpg",
+		spotify: "https://open.spotify.com/album/..."
 	}
+];
+
+const singles = [
+	{ title: "Mayan Sky", year: "2024" },
+	{ title: "Lo-Fi Garden, Vol. 1", year: "2024" },
+	{ title: "Santa Rosa Moon", year: "2023" }
 ];
 ---
 
-<BaseLayout title="Music">
-<section class="pt-32 pb-20 max-w-7xl mx-auto px-8"> 
-	
-	<h1 class="font-serif text-5xl text-center text-cream mb-12 border-b border-gold/30 pb-3">
-		Discography
-	</h1>
+<BaseLayout title="Music | Roman Street">
+	<section class="pt-32 pb-20 max-w-7xl mx-auto px-8">
+		
+		<h1 class="font-serif text-6xl text-center text-cream mb-16 border-b border-gold/20 pb-6">
+			Discography
+		</h1>
 
-	<div class="space-y-16">
-			{discography.map((album) => (
-				<div id={album.id} class="bg-cream/5 p-8 rounded-xl shadow-2xl border border-gold/20">
-					
-					<div class="grid md:grid-cols-3 gap-10 items-start">
-						
-						<div class="col-span-1">
-							<img 
-								src={album.art} 
-								alt={`Album art for ${album.title}`} 
-								class="w-full aspect-square object-cover rounded-lg shadow-xl"
-							/>
-						</div>
+		<div class="grid md:grid-cols-2 gap-12 items-center mb-24 bg-cream/5 p-8 rounded-2xl border border-gold/10">
+			<div class="aspect-square bg-charcoal rounded shadow-2xl overflow-hidden group">
+				<div class="w-full h-full bg-gold/20 flex items-center justify-center text-gold italic">
+					[Album Art: Balcony of the World]
+				</div>
+			</div>
+			<div>
+				<span class="text-gold font-sans uppercase tracking-[0.3em] text-xs">Latest Release</span>
+				<h2 class="font-serif text-4xl text-cream mt-2 mb-4">{albums[0].title}</h2>
+				<p class="text-cream/70 font-serif italic mb-8 text-lg">{albums[0].description}</p>
+				<a href={albums[0].spotify} class="inline-block bg-gold text-charcoal px-8 py-3 rounded-full font-bold uppercase tracking-widest text-xs hover:bg-cream transition">
+					Listen on Spotify
+				</a>
+			</div>
+		</div>
 
-						<div class="md:col-span-2">
-							<h2 class="font-serif text-4xl text-cream mb-2">
-								{album.title} 
-								<span class="text-xl text-gold ml-3">({album.year})</span>
-							</h2>
-							<p class="text-lg text-cream/70 mb-6">
-								Album description goes here. This album showcases the band's blend of {album.id === 'baltic' ? 'Eastern European and Gypsy sounds.' : 'classic Latin and flamenco rhythms.'}
-							</p>
-
-							<h3 class="text-xl font-semibold mb-3 border-b border-cream/20 pb-1">Tracklist</h3>
-							<div class="grid grid-cols-2 gap-x-6">
-								<ol class="list-decimal pl-5 space-y-1 text-cream/80">
-									{album.tracks.map((track, index) => (
-										<li class="hover:text-gold transition cursor-default">
-											{track}
-										</li>
-									))}
-								</ol>
-							</div>
-
-							<div class="mt-8 flex space-x-4">
-								<a href={album.links.spotify} target="_blank" class="flex items-center bg-gold text-charcoal px-4 py-2 rounded-full font-bold text-sm hover:opacity-90 transition">
-									{/* Placeholder for Spotify Icon */}
-									LISTEN ON SPOTIFY
-								</a>
-								<a href={album.links.apple} target="_blank" class="flex items-center border border-gold text-gold px-4 py-2 rounded-full font-bold text-sm hover:bg-gold hover:text-charcoal transition">
-									{/* Placeholder for Apple Music Icon */}
-									APPLE MUSIC
-								</a>
-								<a href={album.links.store} class="flex items-center bg-cream text-charcoal px-4 py-2 rounded-full font-bold text-sm hover:opacity-80 transition">
-									BUY CD/VINYL
-								</a>
-							</div>
-
+		<div class="grid grid-cols-2 lg:grid-cols-3 gap-12 mb-32">
+			{albums.slice(1).map(album => (
+				<div class="group cursor-pointer">
+					<div class="aspect-square bg-cream/10 mb-4 overflow-hidden rounded shadow-lg group-hover:shadow-gold/10 transition-all">
+						<div class="w-full h-full bg-gold/5 group-hover:scale-105 transition-transform duration-500 flex items-center justify-center text-gold/30 text-xs uppercase tracking-widest">
+							{album.title} Art
 						</div>
 					</div>
+					<h3 class="text-cream font-semibold text-xl">{album.title}</h3>
+					<p class="text-gold/60 font-sans text-xs uppercase tracking-widest mt-1">{album.year}</p>
 				</div>
 			))}
+		</div>
+
+		<div class="max-w-3xl">
+			<h2 class="font-serif text-3xl text-gold mb-8 italic">Recent Singles & EPs</h2>
+			<div class="space-y-4">
+				{singles.map(single => (
+					<div class="flex justify-between items-center py-4 border-b border-cream/10 group hover:border-gold/30 transition">
+						<p class="text-cream text-lg group-hover:text-gold transition font-sans tracking-wide">{single.title}</p>
+						<span class="text-cream/40 text-sm font-sans">{single.year}</span>
+					</div>
+				))}
+			</div>
 		</div>
 
 	</section>

@@ -1,42 +1,101 @@
 ---
 // src/components/home/TourList.astro
-const upcomingDates = [
-	{ id: 1, date: 'JAN 20', venue: 'Lobby Lounge', location: 'Slidell, LA', tickets: '#' },
-	{ id: 2, date: 'MAR 22', venue: 'Dave Koz and Friends at Sea', location: 'Caribbean Cruise', tickets: '#' },
-	{ id: 3, date: 4, date: 'APR 05', venue: 'The Velvet Note Jazz Club', location: 'Atlanta, GA', tickets: '#' },
-];
+const SHEET_ID = '1cCpkONhojr2Pw0WNxwXNPeoQfho_kWMkqQ-XDiOmSkI';
+const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
+
+let shows = [];
+
+try {
+  const response = await fetch(CSV_URL);
+  const csv = await response.text();
+  
+  // Split by lines and filter out empty rows
+  const rows = csv.trim().split('\n').filter(row => row.trim() !== '');
+  
+  // Remove the header row
+  const dataRows = rows.slice(1);
+
+  shows = dataRows.map((row) => {
+	// Advanced Regex: Splits by comma but preserves text inside quotes
+	const cells = row.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g) || [];
+	const clean = cells.map(c => c.replace(/^"|"$/g, '').trim());
+
+	// Strict mapping based on your 9 columns:
+	// 0:month, 1:day, 2:year, 3:time, 4:city, 5:state, 6:venue, 7:status, 8:tickets
+	const month  = clean[0] || "";
+	const day    = clean[1] || "";
+	const year   = clean[2] || "";
+	const time   = clean[3] || "";
+	const city   = clean[4] || "";
+	const state  = clean[5] || "";
+	const venue  = clean[6] || "";
+	const status = clean[7] || "TBA";
+	const link   = clean[8] || "#";
+
+	return {
+	  dateDisplay: `${month} ${day}`,
+	  venue: venue,
+	  location: `${city}, ${state}`,
+	  time: time,
+	  status: status,
+	  tickets: link
+	};
+  }).slice(0, 3);
+} catch (e) {
+  console.error("Sheet parsing error:", e);
+}
 ---
 
 <section class="bg-charcoal py-20">
-	<div class="max-w-7xl mx-auto px-8">
-		<h2 class="text-4xl font-serif text-center mb-12 text-cream">Upcoming Shows</h2>
+  <div class="max-w-7xl mx-auto px-8">
+	<h2 class="text-4xl font-serif text-center mb-12 text-cream">
+	  Upcoming Shows
+	</h2>
 
-		<div class="grid md:grid-cols-3 gap-8">
-			{upcomingDates.map((show) => (
-				<div class="bg-cream/5 hover:bg-cream/10 transition duration-300 p-6 rounded-lg border border-gold/20 flex flex-col justify-between">
-					<div>
-						<p class="text-4xl font-bold text-cream mb-2">{show.date}</p>
-						
-						<h3 class="text-xl font-semibold text-cream mb-1">{show.venue}</h3>
-						<p class="text-sm text-cream opacity-70">{show.location}</p>
-					</div>
+	<div class="grid md:grid-cols-3 gap-8">
+	  {shows.map((show) => (
+		<article class="bg-cream/5 p-6 rounded-lg border border-gold/20 flex flex-col justify-between hover:border-gold/50 transition-colors">
+		  <div>
+			<p class="text-4xl font-bold text-cream mb-2 uppercase font-sans">
+			  {show.dateDisplay}
+			</p>
 
-					<a 
-						href={show.tickets} 
-						target="_blank" 
-						class="mt-6 self-start bg-gold text-charcoal px-4 py-2 rounded-full font-bold text-sm 
-							   hover:bg-opacity-80 transition block text-center"
-					>
-						GET TICKETS
-					</a>
-				</div>
-			))}
-		</div>
+			<h3 class="text-xl font-semibold text-cream mb-1 font-serif italic">
+			  {show.venue}
+			</h3>
 
-		<div class="text-center mt-12">
-			<a href="/tour" class="text-lg font-bold text-gold hover:text-cream transition underline underline-offset-4">
-				View Full Tour Schedule →
-			</a>
-		</div>
+			<p class="text-sm text-cream/70 font-sans">
+			  {show.location} {show.time && `| ${show.time}`}
+			</p>
+		  </div>
+
+		  <div class="mt-6">
+			{show.status.toLowerCase().includes('tickets') || show.status.toLowerCase().includes('sale') ? (
+			  <a
+				href={show.tickets}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="block w-full bg-gold text-charcoal px-4 py-2 rounded-full font-bold text-sm hover:bg-cream transition text-center uppercase tracking-wider font-sans"
+			  >
+				Get Tickets
+			  </a>
+			) : (
+			  <span class="block w-full text-center py-2 px-4 rounded-full border border-cream/20 text-cream/40 text-sm font-bold uppercase font-sans">
+				{show.status}
+			  </span>
+			)}
+		  </div>
+		</article>
+	  ))}
 	</div>
+
+	<div class="text-center mt-12">
+	  <a
+		href="/tour"
+		class="text-lg font-bold text-gold hover:text-cream transition underline underline-offset-8 decoration-gold/30 hover:decoration-cream font-sans"
+	  >
+		View Full Tour Schedule →
+	  </a>
+	</div>
+  </div>
 </section>

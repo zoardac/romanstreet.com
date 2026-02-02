@@ -2,7 +2,8 @@
 // src/components/home/MediaGrid.astro
 // Using placehold.co for image placeholders
 const videoPlaceholderUrl = "https://placehold.co/800x450/1e212b/c3b47f?text=FEATURED+VIDEO";
-const instagramPlaceholderUrl = "https://placehold.co/400x400/c3b47f/1e212b?text=@ROMANSTREETMUSIC";
+const instagramPlaceholderUrl = "https://placehold.co/400x400/c3b47f/1e212b?text=@ROMANSTREETBAND";
+const { url } = Astro.props;
 ---
 
 <section class="bg-charcoal py-20 px-8">
@@ -15,13 +16,13 @@ const instagramPlaceholderUrl = "https://placehold.co/400x400/c3b47f/1e212b?text
 				<h3 class="text-2xl font-semibold mb-4 text-gold">Latest Live Performance</h3>
 				
 				<div class="aspect-video w-full relative bg-charcoal flex items-center justify-center">
-					<img 
-						src={videoPlaceholderUrl} 
-						alt="Placeholder for latest Roman Street live video"
-						class="w-full h-full object-cover rounded"
-					/>
+					
 				</div>
-				
+				<div class="relative w-full aspect-video overflow-hidden rounded-md bg-black">
+				  
+				  <iframe class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/s0jdmZM4Zws"></iframe>
+				</div>
+
 				<div class="mt-4 text-center">
 					<a href="/videos" class="text-lg font-bold text-cream hover:text-gold transition underline underline-offset-4">
 						Watch All Videos →
@@ -32,13 +33,13 @@ const instagramPlaceholderUrl = "https://placehold.co/400x400/c3b47f/1e212b?text
 			<div class="grid grid-rows-2 gap-10">
 				
 				<a 
-					href="https://instagram.com/romanstreetmusic" 
+					href="https://instagram.com/romanstreetband" 
 					target="_blank"
 					class="bg-gold text-charcoal p-8 rounded-lg flex flex-col items-center justify-center 
 						   text-center hover:opacity-90 transition shadow-xl"
 				>
 					<h3 class="text-3xl font-serif font-bold mb-2">Follow The Journey</h3>
-					<p class="text-lg font-semibold mb-4">@ROMANSTREETMUSIC</p>
+					<p class="text-lg font-semibold mb-4">@ROMANSTREETBAND</p>
 					<img 
 						src={instagramPlaceholderUrl} 
 						alt="Instagram Feed Placeholder"

@@ -1,38 +1,88 @@
 ---
 // src/components/common/Header.astro
 const navLinks = [
-	{ title: 'HOME', href: '/' },
-	{ title: 'MUSIC', href: '/music' },
-	{ title: 'TOUR', href: '/tour' },
-	{ title: 'VIDEOS', href: '/videos' },
-	{ title: 'ABOUT', href: '/about' },
-	{ title: 'STORE', href: '/store' },
+	{ title: 'Home', href: '/' },
+	{ title: 'Music', href: '/music' },
+	{ title: 'Tour', href: '/tour' },
+	{ title: 'About', href: '/about' },
+	{ title: 'Store', href: '/store' },
+	{ title: 'Contact', href: '/contact' },
 ];
 ---
 
-<header class="fixed top-0 w-full z-50 bg-charcoal/90 backdrop-blur-sm shadow-lg">
-	<nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-		<a href="/" class="font-serif text-3xl text-cream tracking-wider">
+<header class="fixed w-full z-50 bg-charcoal border-b border-gold/10">
+	<div class="max-w-7xl mx-auto px-8 h-20 md:h-24 flex justify-between items-center relative">
+		
+		<a href="/" class="font-sans font-bold text-xl md:text-2xl tracking-[0.2em] text-cream hover:text-gold transition z-[60]">
 			ROMAN STREET
 		</a>
 
-		<div class="hidden lg:flex space-x-8">
-			{navLinks.map((link) => (
-				<a 
-					href={link.href} 
-					class="text-cream hover:text-gold transition duration-200 uppercase text-sm font-semibold"
-				>
+		<nav class="hidden md:flex space-x-8">
+			{navLinks.map(link => (
+				<a href={link.href} class="text-sm font-bold uppercase tracking-widest text-cream/80 hover:text-gold transition font-sans">
 					{link.title}
 				</a>
 			))}
+		</nav>
+
+		<button id="menu-toggle" class="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 z-[70] focus:outline-none">
+			<span class="w-7 h-0.5 bg-gold transition-all duration-300 origin-center line-1"></span>
+			<span class="w-7 h-0.5 bg-gold transition-all duration-300 line-2"></span>
+			<span class="w-7 h-0.5 bg-gold transition-all duration-300 origin-center line-3"></span>
+		</button>
+
+		<div id="mobile-menu" class="fixed inset-0 bg-charcoal translate-x-full transition-transform duration-500 ease-in-out md:hidden flex flex-col items-center justify-center z-60 mt-30">
+			<nav class="flex flex-col items-center space-y-10">
+				{navLinks.map(link => (
+					<a href={link.href} class="text-4xl font-serif italic text-cream hover:text-gold transition mobile-link">
+						{link.title}
+					</a>
+				))}
+			</nav>
+			
+			<div class="mt-16 flex space-x-8">
+				<a href="https://facebook.com/romanstreet" class="text-gold text-xs uppercase tracking-[0.2em] font-sans">Facebook</a>
+				<a href="https://instagram.com/romanstreetmusic" class="text-gold text-xs uppercase tracking-[0.2em] font-sans">Instagram</a>
+			</div>
 		</div>
 
-		<a 
-			href="/booking" 
-			class="hidden sm:inline-block bg-gold text-charcoal px-4 py-2 rounded-full font-bold whitespace-nowrap text-sm hover:opacity-90 transition"
-		>
-			BOOKING INQUIRY
-		</a>
-
-		</nav>
+	</div>
 </header>
+
+<style is:global>
+	/* Triggered via JS: Rotates bars into an X */
+	.menu-open .line-1 { transform: translateY(7px) rotate(45deg); }
+	.menu-open .line-2 { opacity: 0; transform: translateX(-20px); }
+	.menu-open .line-3 { transform: translateY(-7px) rotate(-45deg); }
+	
+	/* Slides the menu onto the screen */
+	.menu-open #mobile-menu { transform: translateX(0); }
+
+	/* Locks scrolling when menu is open */
+	.no-scroll { overflow: hidden; }
+</style>
+
+<script>
+	const menuToggle = document.getElementById('menu-toggle');
+	const header = document.querySelector('header');
+	const mobileLinks = document.querySelectorAll('.mobile-link');
+
+	function toggleMenu() {
+		const isOpen = header?.classList.toggle('menu-open');
+		if (isOpen) {
+			document.body.classList.add('no-scroll');
+		} else {
+			document.body.classList.remove('no-scroll');
+		}
+	}
+
+	menuToggle?.addEventListener('click', toggleMenu);
+
+	// Auto-close menu when a link is clicked
+	mobileLinks.forEach(link => {
+		link.addEventListener('click', () => {
+			header?.classList.remove('menu-open');
+			document.body.classList.remove('no-scroll');
+		});
+	});
+</script>
