@@ -1,7 +1,7 @@
 /* empty css                                 */
-import { e as createComponent, m as maybeRenderHead, r as renderTemplate, h as addAttribute, f as createAstro, k as renderComponent } from '../chunks/astro/server_DUl7M3rT.mjs';
+import { e as createComponent, m as maybeRenderHead, r as renderTemplate, g as addAttribute, h as createAstro, k as renderComponent } from '../chunks/astro/server_B-2LxKLH.mjs';
 import 'piccolore';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_DPTYWPb5.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_6g5RksJP.mjs';
 import 'clsx';
 export { renderers } from '../renderers.mjs';
 

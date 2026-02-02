@@ -1,7 +1,7 @@
 /* empty css                                 */
-import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, l as renderScript } from '../chunks/astro/server_DUl7M3rT.mjs';
+import { e as createComponent, k as renderComponent, r as renderTemplate, m as maybeRenderHead, l as renderScript } from '../chunks/astro/server_B-2LxKLH.mjs';
 import 'piccolore';
-import { $ as $$BaseLayout } from '../chunks/BaseLayout_DPTYWPb5.mjs';
+import { $ as $$BaseLayout } from '../chunks/BaseLayout_6g5RksJP.mjs';
 export { renderers } from '../renderers.mjs';
 
 const $$Booking = createComponent(async ($$result, $$props, $$slots) => {
