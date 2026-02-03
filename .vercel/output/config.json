@@ -2,6 +2,9 @@
 	"version": 3,
 	"routes": [
 		{
+			"handle": "filesystem"
+		},
+		{
 			"src": "^/_astro/(.*)$",
 			"headers": {
 				"cache-control": "public, max-age=31536000, immutable"
@@ -9,46 +12,43 @@
 			"continue": true
 		},
 		{
-			"handle": "filesystem"
-		},
-		{
-			"src": "^\\/_server-islands\\/([^/]+?)\\/?$",
+			"src": "^/_server-islands/([^/]+?)/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/_image\\/?$",
+			"src": "^/_image/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/about\\/?$",
+			"src": "^/about/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/api\\/contact\\/?$",
+			"src": "^/api/contact/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/booking\\/?$",
+			"src": "^/booking/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/music\\/?$",
+			"src": "^/music/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/store\\/?$",
+			"src": "^/store/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/tour\\/?$",
+			"src": "^/tour/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/videos\\/?$",
+			"src": "^/videos/?$",
 			"dest": "_render"
 		},
 		{
-			"src": "^\\/$",
+			"src": "^/$",
 			"dest": "_render"
 		}
 	]
