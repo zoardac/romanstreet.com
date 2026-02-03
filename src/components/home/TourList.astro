@@ -2,26 +2,21 @@
 // src/components/home/TourList.astro
 const SHEET_ID = '1cCpkONhojr2Pw0WNxwXNPeoQfho_kWMkqQ-XDiOmSkI';
 const CSV_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
-
 let shows = [];
-
 try {
   const response = await fetch(CSV_URL);
   const csv = await response.text();
   
-  // Split by lines and filter out empty rows
   const rows = csv.trim().split('\n').filter(row => row.trim() !== '');
-  
-  // Remove the header row
   const dataRows = rows.slice(1);
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   shows = dataRows.map((row) => {
-	// Advanced Regex: Splits by comma but preserves text inside quotes
 	const cells = row.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g) || [];
 	const clean = cells.map(c => c.replace(/^"|"$/g, '').trim());
 
-	// Strict mapping based on your 9 columns:
-	// 0:month, 1:day, 2:year, 3:time, 4:city, 5:state, 6:venue, 7:status, 8:tickets
 	const month  = clean[0] || "";
 	const day    = clean[1] || "";
 	const year   = clean[2] || "";
@@ -38,9 +33,13 @@ try {
 	  location: `${city}, ${state}`,
 	  time: time,
 	  status: status,
-	  tickets: link
+	  tickets: link,
+	  rawDate: new Date(`${month} ${day} ${year}`)
 	};
-  }).slice(0, 3);
+  })
+  .filter(show => show.rawDate >= today)   // Filter out past shows
+  .sort((a, b) => a.rawDate - b.rawDate)  // Sort by soonest first
+  .slice(0, 3);                            // Then grab the next 3 upcoming
 } catch (e) {
   console.error("Sheet parsing error:", e);
 }
@@ -52,7 +51,7 @@ try {
 	  Upcoming Shows
 	</h2>
 
-	<div class="grid md:grid-cols-3 gap-8">
+	<div class={`grid gap-8 ${shows.length === 1 ? 'md:grid-cols-1 max-w-xl mx-auto' : shows.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' : 'md:grid-cols-3'}`}>
 	  {shows.map((show) => (
 		<article class="bg-cream/5 p-6 rounded-lg border border-gold/20 flex flex-col justify-between hover:border-gold/50 transition-colors">
 		  <div>
@@ -70,14 +69,14 @@ try {
 		  </div>
 
 		  <div class="mt-6">
-			{show.status.toLowerCase().includes('tickets') || show.status.toLowerCase().includes('sale') ? (
+			{show.status.toLowerCase().includes('available') || show.status.toLowerCase().includes('tickets') || show.status.toLowerCase().includes('sale') ? (
 			  <a
 				href={show.tickets}
 				target="_blank"
 				rel="noopener noreferrer"
 				class="block w-full bg-gold text-charcoal px-4 py-2 rounded-full font-bold text-sm hover:bg-cream transition text-center uppercase tracking-wider font-sans"
 			  >
-				Get Tickets
+				Buy Tickets
 			  </a>
 			) : (
 			  <span class="block w-full text-center py-2 px-4 rounded-full border border-cream/20 text-cream/40 text-sm font-bold uppercase font-sans">
