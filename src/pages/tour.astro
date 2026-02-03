@@ -10,21 +10,28 @@ const csv = await response.text();
 const rows = csv.trim().split('\n').filter(row => row.trim() !== '');
 
 const fullSchedule = rows.slice(1).map(row => {
-	// This regex is the gold standard for CSVs with commas inside quotes
 	const cells = row.match(/(".*?"|[^",\r\n]+)(?=\s*,|\s*$)/g) || [];
 	const clean = cells.map(c => c.replace(/^"|"$/g, '').trim());
 
 	return {
-	  date: `${clean[0]} ${clean[1]}`.trim(), 
-	  // If clean[2] is the year and clean[3] is time, they are often exported as "2026, 8:00 PM"
-	  // We ensure we grab the right index even if they are split
+	  date: `${clean[0]} ${clean[1]} ${clean[2]}`.trim(), // Added clean[2] (year)
 	  time: clean[3] || "",
-	  location: `${clean[4]}, ${clean[5]}`, // City, State
+	  location: `${clean[4]}, ${clean[5]}`,
 	  venue: clean[6] || "TBA",
 	  status: clean[7] || "Upcoming",
 	  tickets: clean[8] || "#",
+	  mapLink: `https://maps.google.com/?q=${encodeURIComponent(`${clean[6]}, ${clean[4]}, ${clean[5]}`)}`,
+	  rawDate: new Date(`${clean[0]} ${clean[1]} ${clean[2]}`) // For filtering/sorting
 	};
 });
+
+// Filter out past dates and sort by soonest first
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const schedule = fullSchedule
+  .filter(show => show.rawDate >= today)
+  .sort((a, b) => a.rawDate - b.rawDate);
 ---
 
 <BaseLayout title="Tour Schedule">
@@ -51,7 +58,7 @@ const fullSchedule = rows.slice(1).map(row => {
 		</div>
 
 		<div class="space-y-4">
-			{fullSchedule.map((show) => (
+			{schedule.map((show) => (
 				<div class="tour-row grid md:grid-cols-5 gap-8 py-10 md:py-8 items-center border-b border-cream/5 hover:bg-cream/[0.02] transition-all duration-300 px-6 md:px-0 group">
 					
 					<div class="md:col-span-1">
